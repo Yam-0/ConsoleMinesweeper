@@ -16,14 +16,15 @@ namespace ConsoleMinesweeper
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.Clear();
 
-			Console.WriteLine("Press any button to continue");
+			Console.WriteLine("Press any button to start");
 			Console.ReadKey(true);
 
 			//Instance of class for non-static fields
 			Program program = new Program();
 			program.Start();
-			bool[,] bombMap = program.Generate();
-			program.Loop();
+			bool[,] bombMap = program.GenerateBombMap();
+			string[,] map = program.GenerateMap(bombMap);
+			program.Loop(map);
 
 			Main();
 		}
@@ -89,7 +90,7 @@ namespace ConsoleMinesweeper
 		}
 
 		//Generate a field of mines
-		bool[,] Generate()
+		bool[,] GenerateBombMap()
 		{
 			//Declare 2d array of booleans
 			bool[,] bombMap = new bool[currentMap.x, currentMap.y];
@@ -150,13 +151,135 @@ namespace ConsoleMinesweeper
 			return bombMap;
 		}
 
-		void Loop()
+		void Loop(string[,] map)
 		{
+			Console.Clear();
+			while (true)
+			{
+				Console.Clear();
+				//Loop over every pixel
+				for (int x = 0; x < currentMap.x; x++)
+				{
+					Console.WriteLine();
+					for (int y = 0; y < currentMap.y; y++)
+					{
+						if (debugMode && map[x, y] == "*")
+						{
+							Debug.WriteWithColor("*", ConsoleColor.Red);
+						}
+						else
+						{
+							Console.Write(map[x, y]);
+						}
+
+						Console.Write("   ");
+					}
+				}
+
+				Console.ReadLine();
+			}
+		}
+
+		string[,] GenerateMap(bool[,] bombMap)
+		{
+			string[,] map = new string[currentMap.x, currentMap.y];
+
+			//Loop over every pixel
+			for (int x = 0; x < currentMap.x; x++)
+			{
+				for (int y = 0; y < currentMap.y; y++)
+				{
+					map[x, y] = CountBombs(bombMap, x, y).ToString();
+
+					if (debugMode)
+					{
+						if (bombMap[x, y] == true)
+						{
+							map[x, y] = "*";
+						}
+					}
+				}
+			}
+
+
+			return map;
+		}
+
+		int CountBombs(bool[,] bombMap, int x, int y)
+		{
+			int i = 0;
+
+			if (x >= 0 && x < bombMap.GetLength(0))
+			{
+				if (y - 1 >= 0 && y - 1 < bombMap.GetLength(1))
+				{
+					if (bombMap[x, y - 1]) { i++; }
+				}
+			}
+
+			if (x + 1 >= 0 && x + 1 < bombMap.GetLength(0))
+			{
+				if (y - 1 >= 0 && y - 1 < bombMap.GetLength(1))
+				{
+					if (bombMap[x + 1, y - 1]) { i++; }
+				}
+			}
+
+			if (x + 1 >= 0 && x + 1 < bombMap.GetLength(0))
+			{
+				if (y >= 0 && y < bombMap.GetLength(1))
+				{
+					if (bombMap[x + 1, y]) { i++; }
+				}
+			}
+
+			if (x + 1 >= 0 && x + 1 < bombMap.GetLength(0))
+			{
+				if (y + 1 >= 0 && y + 1 < bombMap.GetLength(1))
+				{
+					if (bombMap[x + 1, y + 1]) { i++; }
+				}
+			}
+
+			if (x >= 0 && x < bombMap.GetLength(0))
+			{
+				if (y + 1 >= 0 && y + 1 < bombMap.GetLength(1))
+				{
+					if (bombMap[x, y + 1]) { i++; }
+				}
+			}
+
+			if (x - 1 >= 0 && x - 1 < bombMap.GetLength(0))
+			{
+				if (y + 1 >= 0 && y + 1 < bombMap.GetLength(1))
+				{
+					if (bombMap[x - 1, y + 1]) { i++; }
+				}
+			}
+
+			if (x - 1 >= 0 && x - 1 < bombMap.GetLength(0))
+			{
+				if (y >= 0 && y < bombMap.GetLength(1))
+				{
+					if (bombMap[x - 1, y]) { i++; }
+				}
+			}
+
+			if (x - 1 >= 0 && x - 1 < bombMap.GetLength(0))
+			{
+				if (y - 1 >= 0 && y - 1 < bombMap.GetLength(1))
+				{
+					if (bombMap[x - 1, y - 1]) { i++; }
+				}
+			}
+
+			return i;
 
 		}
 
-		string[,] UpdateMap(string[,] map, int x, int y)
+		string[,] UpdateMap(string[,] map, bool bombMap, int x, int y)
 		{
+
 			return map;
 		}
 	}

@@ -11,4 +11,13 @@ class Debug
 		Console.ForegroundColor = temp;
 		return;
 	}
+
+	public static void WriteWithColor(string message, ConsoleColor color)
+	{
+		ConsoleColor temp = Console.ForegroundColor;
+		Console.ForegroundColor = color;
+		Console.Write(message);
+		Console.ForegroundColor = temp;
+		return;
+	}
 }
