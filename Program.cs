@@ -16,8 +16,8 @@ namespace ConsoleMinesweeper
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.Clear();
 
-			Console.WriteLine("Press enter to continue");
-			Console.ReadLine();
+			Console.WriteLine("Press any button to continue");
+			Console.ReadKey(true);
 
 			//Instance of class for non-static fields
 			Program program = new Program();
@@ -36,22 +36,23 @@ namespace ConsoleMinesweeper
 			MapSize Map2 = new MapSize() { x = 14, y = 8 };
 			MapSize Map3 = new MapSize() { x = 18, y = 9 };
 
-			//Reset current map
-			MapSize currentMap = null;
-
 			//Map selection menu
 			Console.Clear();
-			Console.WriteLine("Choose game size");
-			Console.WriteLine();
+			Console.WriteLine("Available map sizes");
+			Console.WriteLine("------------------");
 			Console.WriteLine("1 : " + Map1.x + "x" + Map1.y);
 			Console.WriteLine("2 : " + Map2.x + "x" + Map2.y);
 			Console.WriteLine("3 : " + Map3.x + "x" + Map3.y);
+			Console.WriteLine("------------------");
+			Console.WriteLine("Choose a map size");
 			Console.WriteLine();
-			Console.WriteLine("Write a number");
+			Console.Write("Map : ");
 
 			//Loop until valid input
 			while (true)
 			{
+				bool pressed = true;
+
 				//Wait until console key input is available
 				while (!Console.KeyAvailable) { }
 
@@ -75,11 +76,12 @@ namespace ConsoleMinesweeper
 
 					default:
 						//Keep looping if invalid input
+						pressed = false;
 						break;
 				}
 
 				//Break if map selection complete
-				if (currentMap != null)
+				if (pressed)
 					break;
 			}
 
@@ -135,8 +137,11 @@ namespace ConsoleMinesweeper
 						Console.Write("   ");
 					}
 				}
+
 				Console.WriteLine();
-				Console.ReadLine();
+				Console.WriteLine();
+				Console.WriteLine("Press any button to continue");
+				Console.ReadKey(true);
 			}
 
 			//Clear and continue
