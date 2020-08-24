@@ -116,7 +116,7 @@ namespace ConsoleMinesweeper
 			{
 				Console.Clear();
 
-				Debug.WriteLineWithColor("Debug window on", ConsoleColor.Red);
+				Debug.WriteLineWithColor("Debug window", ConsoleColor.Red);
 
 				//Loop through squares and draw bombs
 				for (int x = 0; x < currentMap.x; x++)
@@ -141,7 +141,7 @@ namespace ConsoleMinesweeper
 
 				Console.WriteLine();
 				Console.WriteLine();
-				Console.WriteLine("Press any button to continue");
+				Debug.WriteLineWithColor("Press any button to continue", ConsoleColor.Red);
 				Console.ReadKey(true);
 			}
 
