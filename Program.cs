@@ -4,13 +4,13 @@ namespace ConsoleMinesweeper
 {
 	class Program
 	{
-		int gameWidth;
-		int gameHeight;
+		//The current map size
+		public MapSize currentMap = new MapSize();
 
-		int mapSizeIndex;
-
+		//Gain extra tools for runtime
 		bool debugMode = true;
 
+		//Entry point
 		static void Main()
 		{
 			Console.ForegroundColor = ConsoleColor.White;
@@ -19,56 +19,85 @@ namespace ConsoleMinesweeper
 			Console.WriteLine("Press enter to continue");
 			Console.ReadLine();
 
+			//Instance of class for non-static fields
 			Program program = new Program();
 			program.Start();
 			bool[,] bombMap = program.Generate();
 			program.Loop();
+
+			Main();
 		}
 
+		//Start of game menues and options
 		void Start()
 		{
+			//Different map sizes - class object instances
+			MapSize Map1 = new MapSize() { x = 10, y = 7 };
+			MapSize Map2 = new MapSize() { x = 14, y = 8 };
+			MapSize Map3 = new MapSize() { x = 18, y = 9 };
+
+			//Reset current map
+			MapSize currentMap = null;
+
+			//Map selection menu
 			Console.Clear();
 			Console.WriteLine("Choose game size");
 			Console.WriteLine();
-			Console.WriteLine("1 : 9x7");
-			Console.WriteLine("2 : 12x8");
-			Console.WriteLine("3 : 16x9");
+			Console.WriteLine("1 : " + Map1.x + "x" + Map1.y);
+			Console.WriteLine("2 : " + Map2.x + "x" + Map2.y);
+			Console.WriteLine("3 : " + Map3.x + "x" + Map3.y);
 			Console.WriteLine();
 			Console.WriteLine("Write a number");
 
-			string input = Console.ReadLine();
-			switch (input)
+			//Loop until valid input
+			while (true)
 			{
-				case "1":
-					gameWidth = 9;
-					gameHeight = 7;
-					mapSizeIndex = 1;
-					break;
-				case "2":
-					gameWidth = 12;
-					gameHeight = 8;
-					mapSizeIndex = 2;
-					break;
-				case "3":
-					gameWidth = 16;
-					gameHeight = 9;
-					mapSizeIndex = 3;
-					break;
+				//Wait until console key input is available
+				while (!Console.KeyAvailable) { }
 
-				default:
-					Start();
+				//Get current key info
+				ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+				//Compare and apply input
+				switch (keyInfo.Key)
+				{
+					case ConsoleKey.D1:
+						currentMap = Map1;
+						break;
+
+					case ConsoleKey.D2:
+						currentMap = Map2;
+						break;
+
+					case ConsoleKey.D3:
+						currentMap = Map3;
+						break;
+
+					default:
+						//Keep looping if invalid input
+						break;
+				}
+
+				//Break if map selection complete
+				if (currentMap != null)
 					break;
 			}
+
 			return;
 		}
 
+		//Generate a field of mines
 		bool[,] Generate()
 		{
-			bool[,] bombMap = new bool[gameWidth, gameHeight];
-			for (int i = 0; i < gameWidth; i++)
+			//Declare 2d array of booleans
+			bool[,] bombMap = new bool[currentMap.x, currentMap.y];
+
+			//Loop over every pixel
+			for (int x = 0; x < currentMap.x; x++)
 			{
-				for (int j = 0; j < gameHeight; j++)
+				for (int y = 0; y < currentMap.y; y++)
 				{
+					//50% chance for every square to contain a bomb
 					Random random = new Random();
 					Boolean bomb = false;
 
@@ -76,38 +105,42 @@ namespace ConsoleMinesweeper
 					{
 						bomb = true;
 					}
-					bombMap[i, j] = bomb;
+					bombMap[x, y] = bomb;
 				}
 			}
 
+			//Show the bombMap to the player if debug mode is on
 			if (debugMode)
 			{
 				Console.Clear();
-				Console.WriteLine("Debug window");
-				for (int i = 0; i < gameWidth; i++)
+				Console.WriteLine("Debug window on");
+
+				//Loop through squares and draw bombs
+				for (int x = 0; x < currentMap.x; x++)
 				{
 					Console.WriteLine();
-					for (int j = 0; j < gameHeight; j++)
+					for (int y = 0; y < currentMap.y; y++)
 					{
-						if (bombMap[i, j] == true)
+						//Draw bombs and empty squares
+						if (bombMap[x, y] == true)
 						{
 							Console.Write("*");
 						}
 						else
 						{
-							Console.Write("0");
+							Console.Write("'");
 						}
+
+						//distance between chars
 						Console.Write("   ");
 					}
 				}
-
 				Console.WriteLine();
 				Console.ReadLine();
 			}
 
+			//Clear and continue
 			Console.Clear();
-			Console.WriteLine("Press enter to continue");
-			Console.ReadLine();
 			return bombMap;
 		}
 
@@ -120,5 +153,12 @@ namespace ConsoleMinesweeper
 		{
 			return map;
 		}
+	}
+
+	//Map size class object
+	class MapSize
+	{
+		public int x;
+		public int y;
 	}
 }
