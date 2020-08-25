@@ -1,6 +1,6 @@
 using System;
 
-//A collection of debug tools
+//A collection of tools
 class Tools
 {
 	public static void WriteLineWithColor(string message, ConsoleColor color)

@@ -2,13 +2,13 @@
 
 namespace ConsoleMinesweeper
 {
-	class Program
+	public class Program
 	{
 		//The current map size
 		public MapSize currentMap = new MapSize();
 
 		//Gain extra tools for runtime
-		bool debugMode = true;
+		public bool debugMode = true;
 
 		string charOffset = "   ";
 
@@ -25,7 +25,7 @@ namespace ConsoleMinesweeper
 			Program program = new Program();
 			program.Start();
 			bool[,] bombMap = program.GenerateBombMap();
-			string[,] map = program.GenerateMap(bombMap);
+			string[,] map = Generate.GenerateMap(bombMap, program.currentMap, program.debugMode);
 			program.Loop(map, bombMap);
 
 			Main();
@@ -169,43 +169,6 @@ namespace ConsoleMinesweeper
 			}
 		}
 
-		string[,] GenerateMap(bool[,] bombMap)
-		{
-			//Instantiate new map instance
-			string[,] map = new string[currentMap.x, currentMap.y];
-
-			//Loop over every pixel
-			for (int y = 0; y < currentMap.y; y++)
-			{
-				for (int x = 0; x < currentMap.x; x++)
-				{
-					//Counts bombs around pixel
-					int bombNumber = Tools.CountBombs(bombMap, x, y);
-
-					//Never draw zero
-					if (bombNumber == 0)
-					{
-						map[x, y] = "'";
-					}
-					else
-					{
-						map[x, y] = bombNumber.ToString();
-					}
-
-					//Show bombs if in debug mode
-					if (debugMode)
-					{
-						if (bombMap[x, y])
-						{
-							map[x, y] = "*";
-						}
-					}
-				}
-			}
-
-			return map;
-		}
-
 		string[,] UpdateMap(string[,] map, bool[,] bombMap, Vector2 pos)
 		{
 
@@ -298,19 +261,5 @@ namespace ConsoleMinesweeper
 				}
 			}
 		}
-	}
-
-	//Map size class object
-	class MapSize
-	{
-		public int x;
-		public int y;
-	}
-
-	//Vector2 class object
-	class Vector2
-	{
-		public int x;
-		public int y;
 	}
 }
