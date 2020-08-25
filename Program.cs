@@ -8,7 +8,7 @@ namespace ConsoleMinesweeper
 		public MapSize currentMap = new MapSize();
 
 		//Gain extra tools for runtime
-		public bool debugMode = true;
+		public bool debugMode = false;
 
 		string charOffset = "   ";
 
@@ -26,7 +26,8 @@ namespace ConsoleMinesweeper
 			program.Start();
 			bool[,] bombMap = Generate.GenerateBombMap(program.currentMap, program.debugMode, program.charOffset);
 			string[,] map = Generate.GenerateMap(bombMap, program.currentMap, program.debugMode);
-			program.Loop(map, bombMap);
+			bool[,] mask = Generate.GenerateMask(program.currentMap);
+			program.Loop(map, bombMap, mask);
 
 			Main();
 		}
@@ -91,7 +92,8 @@ namespace ConsoleMinesweeper
 			return;
 		}
 
-		void Loop(string[,] map, bool[,] bombMap)
+		//The game loop
+		void Loop(string[,] map, bool[,] bombMap, bool[,] mask)
 		{
 			Vector2 selectedPixel = new Vector2()
 			{
@@ -102,18 +104,20 @@ namespace ConsoleMinesweeper
 			while (true)
 			{
 				Console.Clear();
-				selectedPixel = SelectPixel(map, selectedPixel);
-				UpdateMap(map, bombMap, selectedPixel);
+				selectedPixel = SelectPixel(map, selectedPixel, mask);
+				mask = UpdateMap(bombMap, mask, selectedPixel);
 			}
 		}
 
-		string[,] UpdateMap(string[,] map, bool[,] bombMap, Vector2 pos)
+		//Updates the map - the viewable 2d array
+		bool[,] UpdateMap(bool[,] bombMap, bool[,] mask, Vector2 pos)
 		{
-
-			return map;
+			if (bombMap[pos.x, pos.y]) { GameOver(); }
+			return mask;
 		}
 
-		Vector2 SelectPixel(string[,] map, Vector2 pos)
+		//Method to select a position in 2d array
+		Vector2 SelectPixel(string[,] map, Vector2 pos, bool[,] mask)
 		{
 			//Loop until selected pixel
 			while (true)
@@ -128,15 +132,20 @@ namespace ConsoleMinesweeper
 					{
 						string message = "";
 						ConsoleColor writeColor = ConsoleColor.White;
+						if (mask[x, y])
+						{
+							message = map[x, y];
+						}
+						else
+						{
+							//message = "█";
+							message = "X";
+						}
 
 						if (debugMode && map[x, y] == "*")
 						{
 							message = "*";
 							writeColor = ConsoleColor.Red;
-						}
-						else
-						{
-							message = map[x, y];
 						}
 
 						if (x == pos.x && y == pos.y) { writeColor = ConsoleColor.Green; }
@@ -198,6 +207,14 @@ namespace ConsoleMinesweeper
 						break;
 				}
 			}
+		}
+
+		//Game over state
+		void GameOver()
+		{
+			Console.Clear();
+			Console.WriteLine("Game Over");
+			Console.ReadLine();
 		}
 	}
 }

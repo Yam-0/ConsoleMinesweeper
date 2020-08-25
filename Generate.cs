@@ -2,6 +2,7 @@ using System;
 
 class Generate
 {
+	//Generate underlaying map layer
 	public static string[,] GenerateMap(bool[,] bombMap, MapSize currentMap, bool debugMode)
 	{
 		//Instantiate new map instance
@@ -99,5 +100,21 @@ class Generate
 		//Clear and continue
 		Console.Clear();
 		return bombMap;
+	}
+
+	//Generate empty mask
+	public static bool[,] GenerateMask(MapSize currentMap)
+	{
+		bool[,] mask = new bool[currentMap.x, currentMap.y];
+
+		for (int y = 0; y < currentMap.y; y++)
+		{
+			for (int x = 0; x < currentMap.x; x++)
+			{
+				mask[x, y] = false;
+			}
+		}
+
+		return mask;
 	}
 }

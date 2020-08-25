@@ -3,6 +3,7 @@ using System;
 //A collection of tools
 class Tools
 {
+	//Console.WriteLine with color
 	public static void WriteLineWithColor(string message, ConsoleColor color)
 	{
 		ConsoleColor temp = Console.ForegroundColor;
@@ -12,6 +13,7 @@ class Tools
 		return;
 	}
 
+	//Console.Write with color
 	public static void WriteWithColor(string message, ConsoleColor color)
 	{
 		ConsoleColor temp = Console.ForegroundColor;
@@ -21,6 +23,7 @@ class Tools
 		return;
 	}
 
+	//Count neighbouring bombs 0-8
 	public static int CountBombs(bool[,] bombMap, int x, int y)
 	{
 		int i = 0;
