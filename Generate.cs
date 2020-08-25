@@ -41,69 +41,32 @@ class Generate
 	}
 
 	//Generate a field of mines
-	public static bool[,] GenerateBombMap(MapSize currentMap, bool debugMode, string charOffset)
+	public static bool[,] GenerateBombMap(MapSize currentMap, int bombCount, string charOffset)
 	{
 		//Declare 2d array of booleans
 		bool[,] bombMap = new bool[currentMap.x, currentMap.y];
+		int placedBombs = 0;
 
-		//Loop over every pixel
-		for (int y = 0; y < currentMap.y; y++)
+		while (placedBombs < bombCount)
 		{
-			for (int x = 0; x < currentMap.x; x++)
+			Random random = new Random();
+
+			int x = random.Next(0, currentMap.x);
+			int y = random.Next(0, currentMap.y);
+
+			if (!bombMap[x, y])
 			{
-				//50% chance for every square to contain a bomb
-				Random random = new Random();
-				Boolean bomb = false;
-
-				if (random.Next(0, 5) == 0)
-				{
-					bomb = true;
-				}
-				bombMap[x, y] = bomb;
+				placedBombs++;
+				bombMap[x, y] = true;
 			}
-		}
-
-		//Show the bombMap to the player if debug mode is on
-		if (debugMode)
-		{
-			Console.Clear();
-
-			Tools.WriteLineWithColor("Debug window", ConsoleColor.Red);
-
-			//Loop through squares and draw bombs
-			for (int y = 0; y < currentMap.y; y++)
-			{
-				Console.WriteLine();
-				for (int x = 0; x < currentMap.x; x++)
-				{
-					//Draw bombs and empty squares
-					if (bombMap[x, y] == true)
-					{
-						Console.Write("*");
-					}
-					else
-					{
-						Console.Write("'");
-					}
-
-					//distance between chars
-					Console.Write(charOffset);
-				}
-			}
-
-			Console.WriteLine();
-			Console.WriteLine();
-			Tools.WriteLineWithColor("Press any button to continue", ConsoleColor.Red);
-			Console.ReadKey(true);
 		}
 
 		//Clear and continue
-		Console.Clear();
 		return bombMap;
 	}
 
-	//Generate empty mask
-	public static bool[,] GenerateMask(MapSize currentMap)
+	//Generate empty view mask
+	public static bool[,] GenerateViewMask(MapSize currentMap)
 	{
 		bool[,] mask = new bool[currentMap.x, currentMap.y];
 
@@ -117,5 +80,22 @@ class Generate
 		}
 
 		return mask;
+	}
+
+	//Generate empty select mask
+	public static bool[,] GenerateSelectMask(MapSize currentMap)
+	{
+		bool[,] slectionMask = new bool[currentMap.x, currentMap.y];
+
+		//Loop over every pixel and set it to false
+		for (int y = 0; y < currentMap.y; y++)
+		{
+			for (int x = 0; x < currentMap.x; x++)
+			{
+				slectionMask[x, y] = false;
+			}
+		}
+
+		return slectionMask;
 	}
 }

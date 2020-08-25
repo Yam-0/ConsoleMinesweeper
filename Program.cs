@@ -4,17 +4,17 @@ namespace ConsoleMinesweeper
 {
 	public class Program
 	{
-		//The current map size
+		//Some settings
 		public MapSize currentMap = new MapSize();
-
-		//Gain extra tools for runtime
-		public bool debugMode = true;
+		public int bombs;
+		public bool debugMode = false;
 
 		string charOffset = "   ";
 
 		//Entry point
 		static void Main()
 		{
+			Console.Title = "MINESWEEPER";
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.Clear();
 
@@ -24,10 +24,11 @@ namespace ConsoleMinesweeper
 			//Instance of class for non-static fields
 			Program program = new Program();
 			program.Start();
-			bool[,] bombMap = Generate.GenerateBombMap(program.currentMap, program.debugMode, program.charOffset);
+			bool[,] bombMap = Generate.GenerateBombMap(program.currentMap, program.bombs, program.charOffset);
 			string[,] map = Generate.GenerateMap(bombMap, program.currentMap, program.debugMode);
-			bool[,] mask = Generate.GenerateMask(program.currentMap);
-			program.Loop(map, bombMap, mask);
+			bool[,] viewMask = Generate.GenerateViewMask(program.currentMap);
+			bool[,] selectionMask = Generate.GenerateSelectMask(program.currentMap);
+			program.Loop(map, bombMap, viewMask, selectionMask);
 
 			Main();
 		}
@@ -36,21 +37,57 @@ namespace ConsoleMinesweeper
 		void Start()
 		{
 			//Different map sizes - class object instances
-			MapSize Map1 = new MapSize() { x = 10, y = 7 };
-			MapSize Map2 = new MapSize() { x = 14, y = 8 };
-			MapSize Map3 = new MapSize() { x = 18, y = 9 };
+			MapSize map0 = new MapSize() { x = 10, y = 7 };
+			MapSize map1 = new MapSize() { x = 14, y = 8 };
+			MapSize map2 = new MapSize() { x = 18, y = 9 };
+			MapSize map3 = new MapSize() { x = 27, y = 14 };
+
+			//Build array with objects
+			MapSize[] maps = new MapSize[]{
+				map0, map1, map2, map3
+			};
+
+			//Different bomb settings - integers
+			int[] bombAmounts = new int[]{
+				7, 15, 35, 55
+			};
 
 			//Map selection menu
 			Console.Clear();
 			Console.WriteLine("Available map sizes");
 			Console.WriteLine("------------------");
-			Console.WriteLine("1 : " + Map1.x + "x" + Map1.y);
-			Console.WriteLine("2 : " + Map2.x + "x" + Map2.y);
-			Console.WriteLine("3 : " + Map3.x + "x" + Map3.y);
+			for (int i = 0; i < maps.Length; i++)
+			{
+				Console.WriteLine("Size " + (i + 1) + "  (" + maps[i].x + " , " + maps[i].y + ")");
+			}
 			Console.WriteLine("------------------");
 			Console.WriteLine("Choose a map size");
 			Console.WriteLine();
-			Console.Write("Map : ");
+
+			//Apply selection
+			currentMap = maps[Select()];
+
+			//Bomb number selection menu
+			Console.WriteLine("Available bomb amounts");
+			Console.WriteLine("------------------");
+			for (int i = 0; i < bombAmounts.Length; i++)
+			{
+				Console.WriteLine("Amount " + (i + 1) + "  (" + bombAmounts[i] + " , " + bombAmounts[i] + ")");
+			}
+			Console.WriteLine("------------------");
+			Console.WriteLine("Choose a map size");
+			Console.WriteLine();
+
+			//Apply selection
+			bombs = bombAmounts[Select()];
+
+			Console.Clear();
+			return;
+		}
+
+		private int Select()
+		{
+			int index = 0;
 
 			//Loop until valid input
 			while (true)
@@ -67,15 +104,19 @@ namespace ConsoleMinesweeper
 				switch (keyInfo.Key)
 				{
 					case ConsoleKey.D1:
-						currentMap = Map1;
+						index = 0;
 						break;
 
 					case ConsoleKey.D2:
-						currentMap = Map2;
+						index = 1;
 						break;
 
 					case ConsoleKey.D3:
-						currentMap = Map3;
+						index = 2;
+						break;
+
+					case ConsoleKey.D4:
+						index = 3;
 						break;
 
 					default:
@@ -89,42 +130,78 @@ namespace ConsoleMinesweeper
 					break;
 			}
 
-			return;
+			return index;
 		}
 
 		//The game loop
-		void Loop(string[,] map, bool[,] bombMap, bool[,] mask)
+		void Loop(string[,] map, bool[,] bombMap, bool[,] viewMask, bool[,] selectionMask)
 		{
-			Vector2 selectedPixel = new Vector2()
-			{
-				x = 0,
-				y = 0
-			};
+			bool[,] a = new bool[1000, 1000];
+			Vector2 zero = new Vector2() { x = 0, y = 0 };
+
+			PlaceData selectedPixel = new PlaceData();
+			selectedPixel.pos = zero;
+			selectedPixel.place = false;
 
 			while (true)
 			{
 				Console.Clear();
-				selectedPixel = SelectPixel(map, selectedPixel, mask);
-				mask = UpdateMap(bombMap, mask, map, selectedPixel);
+				selectedPixel = SelectPixel(map, selectedPixel.pos, viewMask, selectionMask);
+
+				if (selectedPixel.place)
+				{
+					if (selectedPixel.place && !selectionMask[selectedPixel.pos.x, selectedPixel.pos.y])
+					{
+						viewMask = UpdateMap(bombMap, viewMask, map, selectedPixel.pos);
+					}
+				}
+				else
+				{
+					if (selectionMask[selectedPixel.pos.x, selectedPixel.pos.y])
+					{
+						selectionMask[selectedPixel.pos.x, selectedPixel.pos.y] = false;
+					}
+					else
+					{
+						selectionMask[selectedPixel.pos.x, selectedPixel.pos.y] = true;
+					}
+				}
+
+				int squares = currentMap.x * currentMap.y;
+				int count = 0;
+
+				for (int y = 0; y < currentMap.y; y++)
+				{
+					for (int x = 0; x < currentMap.x; x++)
+					{
+						if (viewMask[x, y]) { count++; }
+					}
+				}
+
+				if (squares - count == bombs)
+				{
+					Win();
+				}
 			}
 		}
 
 		//Updates the map - the viewable 2d array
-		public bool[,] UpdateMap(bool[,] bombMap, bool[,] mask, string[,] map, Vector2 pos)
+		public bool[,] UpdateMap(bool[,] bombMap, bool[,] viewMask, string[,] map, Vector2 pos)
 		{
-			mask[pos.x, pos.y] = true;
+			viewMask[pos.x, pos.y] = true;
 			if (bombMap[pos.x, pos.y]) { GameOver(); }
+
 
 			if (map[pos.x, pos.y] == "'")
 			{
-				Tools.NeighbourCall(bombMap, mask, map, pos);
+				Tools.NeighbourCall(bombMap, viewMask, map, pos);
 			}
 
-			return mask;
+			return viewMask;
 		}
 
 		//Method to select a position in 2d array
-		Vector2 SelectPixel(string[,] map, Vector2 pos, bool[,] mask)
+		PlaceData SelectPixel(string[,] map, Vector2 pos, bool[,] viewMask, bool[,] selectionMask)
 		{
 			//Loop until selected pixel
 			while (true)
@@ -139,14 +216,27 @@ namespace ConsoleMinesweeper
 					{
 						string message = "";
 						ConsoleColor writeColor = ConsoleColor.White;
-						if (mask[x, y])
+
+						if (selectionMask[x, y] && map[x, y] != "■")
 						{
-							message = map[x, y];
+							writeColor = ConsoleColor.Red;
 						}
 						else
 						{
-							//message = "█";
-							message = "X";
+							selectionMask[x, y] = false;
+						}
+
+						if (viewMask[x, y])
+						{
+							message = map[x, y];
+							if (message != "'")
+							{
+								writeColor = ConsoleColor.Blue;
+							}
+						}
+						else
+						{
+							message = "■";
 						}
 
 						if (debugMode && map[x, y] == "*")
@@ -201,7 +291,16 @@ namespace ConsoleMinesweeper
 
 						case ConsoleKey.Spacebar:
 						case ConsoleKey.Enter:
-							return pos;
+							PlaceData placeData0 = new PlaceData();
+							placeData0.pos = pos;
+							placeData0.place = true;
+							return placeData0;
+
+						case ConsoleKey.Tab:
+							PlaceData placeData1 = new PlaceData();
+							placeData1.pos = pos;
+							placeData1.place = false;
+							return placeData1;
 
 						default:
 							//Keep looping if invalid input
@@ -216,11 +315,25 @@ namespace ConsoleMinesweeper
 			}
 		}
 
-		//Game over state
+		//Game over lose state
 		void GameOver()
 		{
 			Console.Clear();
 			Console.WriteLine("Game Over");
+			Console.WriteLine();
+			Console.WriteLine("Press any button to continue");
+			Console.ReadKey(true);
+			Main();
+		}
+
+		//Game over win state
+		void Win()
+		{
+			Console.Clear();
+			Console.WriteLine("You Won!");
+			Console.WriteLine();
+			Console.WriteLine("Map size 	: (" + currentMap.x + ", " + currentMap.y + ")");
+			Console.WriteLine("Bombs 		: (" + bombs + ")");
 			Console.WriteLine();
 			Console.WriteLine("Press any button to continue");
 			Console.ReadKey(true);
