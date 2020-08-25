@@ -8,7 +8,7 @@ namespace ConsoleMinesweeper
 		public MapSize currentMap = new MapSize();
 
 		//Gain extra tools for runtime
-		public bool debugMode = false;
+		public bool debugMode = true;
 
 		string charOffset = "   ";
 
@@ -105,14 +105,21 @@ namespace ConsoleMinesweeper
 			{
 				Console.Clear();
 				selectedPixel = SelectPixel(map, selectedPixel, mask);
-				mask = UpdateMap(bombMap, mask, selectedPixel);
+				mask = UpdateMap(bombMap, mask, map, selectedPixel);
 			}
 		}
 
 		//Updates the map - the viewable 2d array
-		bool[,] UpdateMap(bool[,] bombMap, bool[,] mask, Vector2 pos)
+		public bool[,] UpdateMap(bool[,] bombMap, bool[,] mask, string[,] map, Vector2 pos)
 		{
+			mask[pos.x, pos.y] = true;
 			if (bombMap[pos.x, pos.y]) { GameOver(); }
+
+			if (map[pos.x, pos.y] == "'")
+			{
+				Tools.NeighbourCall(bombMap, mask, map, pos);
+			}
+
 			return mask;
 		}
 
@@ -214,7 +221,10 @@ namespace ConsoleMinesweeper
 		{
 			Console.Clear();
 			Console.WriteLine("Game Over");
-			Console.ReadLine();
+			Console.WriteLine();
+			Console.WriteLine("Press any button to continue");
+			Console.ReadKey(true);
+			Main();
 		}
 	}
 }

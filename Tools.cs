@@ -95,4 +95,84 @@ class Tools
 		return i;
 
 	}
+
+	//Calls 0-8 neigbouring empty squares
+	public static void NeighbourCall(bool[,] bombMap, bool[,] mask, string[,] map, Vector2 pos)
+	{
+		ConsoleMinesweeper.Program program = new ConsoleMinesweeper.Program();
+
+		if (pos.x >= 0 && pos.x < bombMap.GetLength(0))
+		{
+			if (pos.y - 1 >= 0 && pos.y - 1 < bombMap.GetLength(1))
+			{
+				if (!mask[pos.x, pos.y - 1])
+					program.UpdateMap(bombMap, mask, map, new Vector2 { x = pos.x, y = pos.y - 1 });
+			}
+		}
+
+		if (pos.x + 1 >= 0 && pos.x + 1 < bombMap.GetLength(0))
+		{
+			if (pos.y - 1 >= 0 && pos.y - 1 < bombMap.GetLength(1))
+			{
+				if (!mask[pos.x + 1, pos.y - 1])
+					program.UpdateMap(bombMap, mask, map, new Vector2 { x = pos.x + 1, y = pos.y - 1 });
+			}
+		}
+
+		if (pos.x + 1 >= 0 && pos.x + 1 < bombMap.GetLength(0))
+		{
+			if (pos.y >= 0 && pos.y < bombMap.GetLength(1))
+			{
+				if (!mask[pos.x + 1, pos.y])
+					program.UpdateMap(bombMap, mask, map, new Vector2 { x = pos.x + 1, y = pos.y });
+			}
+		}
+
+		if (pos.x + 1 >= 0 && pos.x + 1 < bombMap.GetLength(0))
+		{
+			if (pos.y + 1 >= 0 && pos.y + 1 < bombMap.GetLength(1))
+			{
+				if (!mask[pos.x + 1, pos.y + 1])
+					program.UpdateMap(bombMap, mask, map, new Vector2 { x = pos.x + 1, y = pos.y + 1 });
+			}
+		}
+
+		if (pos.x >= 0 && pos.x < bombMap.GetLength(0))
+		{
+			if (pos.y + 1 >= 0 && pos.y + 1 < bombMap.GetLength(1))
+			{
+				if (!mask[pos.x, pos.y + 1])
+					program.UpdateMap(bombMap, mask, map, new Vector2 { x = pos.x, y = pos.y + 1 });
+			}
+		}
+
+		if (pos.x - 1 >= 0 && pos.x - 1 < bombMap.GetLength(0))
+		{
+			if (pos.y + 1 >= 0 && pos.y + 1 < bombMap.GetLength(1))
+			{
+				if (!mask[pos.x - 1, pos.y + 1])
+					program.UpdateMap(bombMap, mask, map, new Vector2 { x = pos.x - 1, y = pos.y + 1 });
+			}
+		}
+
+		if (pos.x - 1 >= 0 && pos.x - 1 < bombMap.GetLength(0))
+		{
+			if (pos.y >= 0 && pos.y < bombMap.GetLength(1))
+			{
+				if (!mask[pos.x - 1, pos.y])
+					program.UpdateMap(bombMap, mask, map, new Vector2 { x = pos.x - 1, y = pos.y });
+			}
+		}
+
+		if (pos.x - 1 >= 0 && pos.x - 1 < bombMap.GetLength(0))
+		{
+			if (pos.y - 1 >= 0 && pos.y - 1 < bombMap.GetLength(1))
+			{
+				if (!mask[pos.x - 1, pos.y - 1])
+					program.UpdateMap(bombMap, mask, map, new Vector2 { x = pos.x - 1, y = pos.y - 1 });
+			}
+		}
+
+		return;
+	}
 }

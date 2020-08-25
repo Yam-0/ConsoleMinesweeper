@@ -107,6 +107,7 @@ class Generate
 	{
 		bool[,] mask = new bool[currentMap.x, currentMap.y];
 
+		//Loop over every pixel and set it to false
 		for (int y = 0; y < currentMap.y; y++)
 		{
 			for (int x = 0; x < currentMap.x; x++)
