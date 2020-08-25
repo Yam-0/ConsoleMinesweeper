@@ -24,7 +24,7 @@ namespace ConsoleMinesweeper
 			program.Start();
 			bool[,] bombMap = program.GenerateBombMap();
 			string[,] map = program.GenerateMap(bombMap);
-			program.Loop(map);
+			program.Loop(map, bombMap);
 
 			Main();
 		}
@@ -96,9 +96,9 @@ namespace ConsoleMinesweeper
 			bool[,] bombMap = new bool[currentMap.x, currentMap.y];
 
 			//Loop over every pixel
-			for (int x = 0; x < currentMap.x; x++)
+			for (int y = 0; y < currentMap.y; y++)
 			{
-				for (int y = 0; y < currentMap.y; y++)
+				for (int x = 0; x < currentMap.x; x++)
 				{
 					//50% chance for every square to contain a bomb
 					Random random = new Random();
@@ -120,10 +120,10 @@ namespace ConsoleMinesweeper
 				Tools.WriteLineWithColor("Debug window", ConsoleColor.Red);
 
 				//Loop through squares and draw bombs
-				for (int x = 0; x < currentMap.x; x++)
+				for (int y = 0; y < currentMap.y; y++)
 				{
 					Console.WriteLine();
-					for (int y = 0; y < currentMap.y; y++)
+					for (int x = 0; x < currentMap.x; x++)
 					{
 						//Draw bombs and empty squares
 						if (bombMap[x, y] == true)
@@ -151,32 +151,19 @@ namespace ConsoleMinesweeper
 			return bombMap;
 		}
 
-		void Loop(string[,] map)
+		void Loop(string[,] map, bool[,] bombMap)
 		{
-			Console.Clear();
+			Vector2 selectedPixel = new Vector2()
+			{
+				x = 0,
+				y = 0
+			};
+
 			while (true)
 			{
 				Console.Clear();
-				//Loop over every pixel
-				for (int x = 0; x < currentMap.x; x++)
-				{
-					Console.WriteLine();
-					for (int y = 0; y < currentMap.y; y++)
-					{
-						if (debugMode && map[x, y] == "*")
-						{
-							Tools.WriteWithColor("*", ConsoleColor.Red);
-						}
-						else
-						{
-							Console.Write(map[x, y]);
-						}
-
-						Console.Write("   ");
-					}
-				}
-
-				Console.ReadLine();
+				selectedPixel = SelectPixel(map, selectedPixel);
+				UpdateMap(map, bombMap, selectedPixel);
 			}
 		}
 
@@ -186,9 +173,9 @@ namespace ConsoleMinesweeper
 			string[,] map = new string[currentMap.x, currentMap.y];
 
 			//Loop over every pixel
-			for (int x = 0; x < currentMap.x; x++)
+			for (int y = 0; y < currentMap.y; y++)
 			{
-				for (int y = 0; y < currentMap.y; y++)
+				for (int x = 0; x < currentMap.x; x++)
 				{
 					//Counts bombs around pixel
 					int bombNumber = Tools.CountBombs(bombMap, x, y);
@@ -213,19 +200,115 @@ namespace ConsoleMinesweeper
 					}
 				}
 			}
-			y
+
 			return map;
 		}
 
-		string[,] UpdateMap(string[,] map, bool bombMap, int x, int y)
+		string[,] UpdateMap(string[,] map, bool[,] bombMap, Vector2 pos)
 		{
 
 			return map;
+		}
+
+		Vector2 SelectPixel(string[,] map, Vector2 pos)
+		{
+			while (true)
+			{
+				Console.Clear();
+				//Loop over every pixel
+				for (int y = 0; y < currentMap.y; y++)
+				{
+					Console.WriteLine();
+					for (int x = 0; x < currentMap.x; x++)
+					{
+						string message = "";
+						ConsoleColor writeColor = ConsoleColor.White;
+
+
+						if (debugMode && map[x, y] == "*")
+						{
+							message = "*";
+							writeColor = ConsoleColor.Red;
+						}
+						else
+						{
+							message = map[x, y];
+						}
+
+						if (x == pos.x && y == pos.y)
+						{
+							writeColor = ConsoleColor.Green;
+						}
+
+						//Write the pixel
+						Tools.WriteWithColor(message, writeColor);
+
+						//Distance between chars
+						Console.Write("   ");
+					}
+				}
+
+				//Loop until valid input
+				while (true)
+				{
+					bool pressed = true;
+
+					//Wait until console key input is available
+					while (!Console.KeyAvailable) { }
+
+					//Get current key info
+					ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+					//Compare and apply input
+					switch (keyInfo.Key)
+					{
+						case ConsoleKey.UpArrow:
+						case ConsoleKey.W:
+							if (pos.y > 0) { pos.y--; }
+							break;
+
+						case ConsoleKey.RightArrow:
+						case ConsoleKey.D:
+							if (pos.x <= currentMap.x - 2) { pos.x++; }
+							break;
+
+						case ConsoleKey.DownArrow:
+						case ConsoleKey.S:
+							if (pos.y <= currentMap.y - 2) { pos.y++; }
+							break;
+
+						case ConsoleKey.LeftArrow:
+						case ConsoleKey.A:
+							if (pos.x > 0) { pos.x--; }
+							break;
+
+						case ConsoleKey.Spacebar:
+						case ConsoleKey.Enter:
+							return pos;
+
+						default:
+							//Keep looping if invalid input
+							pressed = false;
+							break;
+					}
+
+					//Break if map selection complete
+					if (pressed)
+						break;
+				}
+			}
 		}
 	}
 
 	//Map size class object
 	class MapSize
+	{
+		public int x;
+		public int y;
+	}
+
+	//Vector2 class object
+	class Vector2
 	{
 		public int x;
 		public int y;
