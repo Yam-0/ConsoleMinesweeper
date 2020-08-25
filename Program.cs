@@ -10,6 +10,8 @@ namespace ConsoleMinesweeper
 		//Gain extra tools for runtime
 		bool debugMode = true;
 
+		string charOffset = "   ";
+
 		//Entry point
 		static void Main()
 		{
@@ -81,7 +83,7 @@ namespace ConsoleMinesweeper
 						break;
 				}
 
-				//Break if map selection complete
+				//Break if any valid button pressed
 				if (pressed)
 					break;
 			}
@@ -136,7 +138,7 @@ namespace ConsoleMinesweeper
 						}
 
 						//distance between chars
-						Console.Write("   ");
+						Console.Write(charOffset);
 					}
 				}
 
@@ -212,9 +214,11 @@ namespace ConsoleMinesweeper
 
 		Vector2 SelectPixel(string[,] map, Vector2 pos)
 		{
+			//Loop until selected pixel
 			while (true)
 			{
 				Console.Clear();
+
 				//Loop over every pixel
 				for (int y = 0; y < currentMap.y; y++)
 				{
@@ -223,7 +227,6 @@ namespace ConsoleMinesweeper
 					{
 						string message = "";
 						ConsoleColor writeColor = ConsoleColor.White;
-
 
 						if (debugMode && map[x, y] == "*")
 						{
@@ -235,16 +238,13 @@ namespace ConsoleMinesweeper
 							message = map[x, y];
 						}
 
-						if (x == pos.x && y == pos.y)
-						{
-							writeColor = ConsoleColor.Green;
-						}
+						if (x == pos.x && y == pos.y) { writeColor = ConsoleColor.Green; }
 
 						//Write the pixel
 						Tools.WriteWithColor(message, writeColor);
 
 						//Distance between chars
-						Console.Write("   ");
+						Console.Write(charOffset);
 					}
 				}
 
@@ -292,7 +292,7 @@ namespace ConsoleMinesweeper
 							break;
 					}
 
-					//Break if map selection complete
+					//Break if any valid button pressed
 					if (pressed)
 						break;
 				}
