@@ -7,7 +7,7 @@ namespace ConsoleMinesweeper
 		//Some settings
 		public MapSize currentMap = new MapSize();
 		public int bombs;
-		public bool debugMode = false;
+		public bool debugMode = true;
 
 		string charOffset = "   ";
 
@@ -58,7 +58,7 @@ namespace ConsoleMinesweeper
 			Console.WriteLine("------------------");
 			for (int i = 0; i < maps.Length; i++)
 			{
-				Console.WriteLine("Size " + (i + 1) + "  (" + maps[i].x + " , " + maps[i].y + ")");
+				Console.WriteLine("Size " + (i + 1) + "  (" + maps[i].x + ", " + maps[i].y + ")");
 			}
 			Console.WriteLine("------------------");
 			Console.WriteLine("Choose a map size");
@@ -72,7 +72,7 @@ namespace ConsoleMinesweeper
 			Console.WriteLine("------------------");
 			for (int i = 0; i < bombAmounts.Length; i++)
 			{
-				Console.WriteLine("Amount " + (i + 1) + "  (" + bombAmounts[i] + " , " + bombAmounts[i] + ")");
+				Console.WriteLine("Amount " + (i + 1) + "  (" + bombAmounts[i] + ")");
 			}
 			Console.WriteLine("------------------");
 			Console.WriteLine("Choose a map size");
