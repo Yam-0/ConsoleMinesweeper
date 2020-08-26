@@ -7,7 +7,7 @@ namespace ConsoleMinesweeper
 		//Some settings
 		public MapSize currentMap = new MapSize();
 		public int bombs;
-		public bool debugMode = true;
+		public bool debugMode = false;
 
 		string charOffset = "   ";
 
@@ -146,8 +146,11 @@ namespace ConsoleMinesweeper
 			while (true)
 			{
 				Console.Clear();
+
+				//Returns placedata of selected pixel
 				selectedPixel = SelectPixel(map, selectedPixel.pos, viewMask, selectionMask);
 
+				//Updates selection/view masks
 				if (selectedPixel.place)
 				{
 					if (selectedPixel.place && !selectionMask[selectedPixel.pos.x, selectedPixel.pos.y])
@@ -167,7 +170,10 @@ namespace ConsoleMinesweeper
 					}
 				}
 
+				//Area of map
 				int squares = currentMap.x * currentMap.y;
+
+				//Viewable squares count
 				int count = 0;
 
 				for (int y = 0; y < currentMap.y; y++)
@@ -178,6 +184,7 @@ namespace ConsoleMinesweeper
 					}
 				}
 
+				//Win if only bombs remain
 				if (squares - count == bombs)
 				{
 					Win();
@@ -188,10 +195,13 @@ namespace ConsoleMinesweeper
 		//Updates the map - the viewable 2d array
 		public bool[,] UpdateMap(bool[,] bombMap, bool[,] viewMask, string[,] map, Vector2 pos)
 		{
+			//Make pixel viewable
 			viewMask[pos.x, pos.y] = true;
+
+			//Game over if hit bomb
 			if (bombMap[pos.x, pos.y]) { GameOver(); }
 
-
+			//Recursion call for large areas
 			if (map[pos.x, pos.y] == "'")
 			{
 				Tools.NeighbourCall(bombMap, viewMask, map, pos);
@@ -217,6 +227,7 @@ namespace ConsoleMinesweeper
 						string message = "";
 						ConsoleColor writeColor = ConsoleColor.White;
 
+						//Only hidden squares can be marked
 						if (selectionMask[x, y] && map[x, y] != "■")
 						{
 							writeColor = ConsoleColor.Red;
@@ -226,12 +237,18 @@ namespace ConsoleMinesweeper
 							selectionMask[x, y] = false;
 						}
 
+						//Numbers are blue
 						if (viewMask[x, y])
 						{
 							message = map[x, y];
 							if (message != "'")
 							{
 								writeColor = ConsoleColor.Blue;
+								selectionMask[x, y] = false;
+							}
+							else
+							{
+								writeColor = ConsoleColor.White;
 							}
 						}
 						else
@@ -239,12 +256,14 @@ namespace ConsoleMinesweeper
 							message = "■";
 						}
 
+						//Bombs are red in debug mode
 						if (debugMode && map[x, y] == "*")
 						{
 							message = "*";
 							writeColor = ConsoleColor.Red;
 						}
 
+						//Draw cursor pixel green
 						if (x == pos.x && y == pos.y) { writeColor = ConsoleColor.Green; }
 
 						//Write the pixel

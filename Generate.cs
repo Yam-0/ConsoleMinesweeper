@@ -43,31 +43,33 @@ class Generate
 	//Generate a field of mines
 	public static bool[,] GenerateBombMap(MapSize currentMap, int bombCount, string charOffset)
 	{
-		//Declare 2d array of booleans
+		//Create 2d mask array
 		bool[,] bombMap = new bool[currentMap.x, currentMap.y];
 		int placedBombs = 0;
 
 		while (placedBombs < bombCount)
 		{
+			//Create random position in field
 			Random random = new Random();
-
 			int x = random.Next(0, currentMap.x);
 			int y = random.Next(0, currentMap.y);
 
+			//Make sure a bomb isn't there already
 			if (!bombMap[x, y])
 			{
+				//Place bomb
 				placedBombs++;
 				bombMap[x, y] = true;
 			}
 		}
 
-		//Clear and continue
 		return bombMap;
 	}
 
 	//Generate empty view mask
 	public static bool[,] GenerateViewMask(MapSize currentMap)
 	{
+		//Create 2d mask array
 		bool[,] mask = new bool[currentMap.x, currentMap.y];
 
 		//Loop over every pixel and set it to false
@@ -75,7 +77,8 @@ class Generate
 		{
 			for (int x = 0; x < currentMap.x; x++)
 			{
-				mask[x, y] = false;
+				z
+				   mask[x, y] = false;
 			}
 		}
 
