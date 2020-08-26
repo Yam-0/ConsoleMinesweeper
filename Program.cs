@@ -314,15 +314,19 @@ namespace ConsoleMinesweeper
 
 						case ConsoleKey.Spacebar:
 						case ConsoleKey.Enter:
-							PlaceData placeData0 = new PlaceData();
-							placeData0.pos = pos;
-							placeData0.place = true;
+							PlaceData placeData0 = new PlaceData
+							{
+								pos = pos,
+								place = true
+							};
 							return placeData0;
 
 						case ConsoleKey.Tab:
-							PlaceData placeData1 = new PlaceData();
-							placeData1.pos = pos;
-							placeData1.place = false;
+							PlaceData placeData1 = new PlaceData
+							{
+								pos = pos,
+								place = false
+							};
 							return placeData1;
 
 						default:
