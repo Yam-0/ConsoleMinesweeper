@@ -77,8 +77,7 @@ class Generate
 		{
 			for (int x = 0; x < currentMap.x; x++)
 			{
-				z
-				   mask[x, y] = false;
+				mask[x, y] = false;
 			}
 		}
 

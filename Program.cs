@@ -23,6 +23,8 @@ namespace ConsoleMinesweeper
 
 			//Instance of class for non-static fields
 			Program program = new Program();
+
+			//Use new instance to call non-static fields
 			program.Start();
 			bool[,] bombMap = Generate.GenerateBombMap(program.currentMap, program.bombs, program.charOffset);
 			string[,] map = Generate.GenerateMap(bombMap, program.currentMap, program.debugMode);
