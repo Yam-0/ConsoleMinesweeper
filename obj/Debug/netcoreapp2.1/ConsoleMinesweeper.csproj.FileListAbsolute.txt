@@ -3,7 +3,6 @@ C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp
 C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp2.1\ConsoleMinesweeper.runtimeconfig.dev.json
 C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp2.1\ConsoleMinesweeper.dll
 C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp2.1\ConsoleMinesweeper.pdb
-C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp2.1\ConsoleMinesweeper.csprojAssemblyReference.cache
 C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp2.1\ConsoleMinesweeper.csproj.CoreCompileInputs.cache
 C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp2.1\ConsoleMinesweeper.AssemblyInfoInputs.cache
 C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp2.1\ConsoleMinesweeper.AssemblyInfo.cs
@@ -21,3 +20,4 @@ C:\Users\tage.akerstrom\Documents\Projects\SmallProjects\Console-minesweeper\obj
 C:\Users\tage.akerstrom\Documents\Projects\SmallProjects\Console-minesweeper\obj\Debug\netcoreapp2.1\ConsoleMinesweeper.dll
 C:\Users\tage.akerstrom\Documents\Projects\SmallProjects\Console-minesweeper\obj\Debug\netcoreapp2.1\ConsoleMinesweeper.pdb
 C:\Users\tage.akerstrom\Documents\Projects\SmallProjects\Console-minesweeper\obj\Debug\netcoreapp2.1\ConsoleMinesweeper.genruntimeconfig.cache
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp2.1\ConsoleMinesweeper.csprojAssemblyReference.cache

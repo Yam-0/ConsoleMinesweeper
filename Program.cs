@@ -141,9 +141,11 @@ namespace ConsoleMinesweeper
 			bool[,] a = new bool[1000, 1000];
 			Vector2 zero = new Vector2() { x = 0, y = 0 };
 
-			PlaceData selectedPixel = new PlaceData();
-			selectedPixel.pos = zero;
-			selectedPixel.place = false;
+			PlaceData selectedPixel = new PlaceData
+			{
+				pos = zero,
+				place = false
+			};
 
 			while (true)
 			{
