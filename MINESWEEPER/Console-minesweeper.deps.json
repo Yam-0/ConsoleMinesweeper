@@ -1,11 +1,11 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v3.1",
+    "name": "netstandard2.1",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v3.1": {
+    "netstandard2.1": {
       "Console-minesweeper/1.0.0": {
         "runtime": {
           "Console-minesweeper.dll": {}

@@ -11,3 +11,16 @@ C:\Users\tage.akerstrom\Documents\Projects\SmallProjects\Console-minesweeper\obj
 C:\Users\tage.akerstrom\Documents\Projects\SmallProjects\Console-minesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.dll
 C:\Users\tage.akerstrom\Documents\Projects\SmallProjects\Console-minesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.pdb
 C:\Users\tage.akerstrom\Documents\Projects\SmallProjects\Console-minesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.genruntimeconfig.cache
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp3.1\Console-minesweeper.exe
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp3.1\Console-minesweeper.deps.json
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp3.1\Console-minesweeper.runtimeconfig.json
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp3.1\Console-minesweeper.runtimeconfig.dev.json
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp3.1\Console-minesweeper.dll
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\bin\Debug\netcoreapp3.1\Console-minesweeper.pdb
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.csprojAssemblyReference.cache
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.AssemblyInfoInputs.cache
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.AssemblyInfo.cs
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.csproj.CoreCompileInputs.cache
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.dll
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.pdb
+C:\Users\Tage\source\repos\SmallProjects\ConsoleMinesweeper\obj\Debug\netcoreapp3.1\Console-minesweeper.genruntimeconfig.cache
